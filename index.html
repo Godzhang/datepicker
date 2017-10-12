@@ -11,6 +11,7 @@
 		.prev,.next{width: 30px;color: #fff;}
 		.prev:hover,.next:hover{background: #257eae;}
 		.week{height: 50px;overflow: hidden;}
+		.week li{background: #eee;}
 		.week li,.days a,.days span{float: left;width: 50px;height: 50px;text-align: center;line-height: 50px;font-size: 20px;color: #373737;}
 		.days a,.days span{font-size: 18px;}
 		.days span{color: #999;}		
@@ -22,7 +23,7 @@
 <body>
 
 <input type="text" id="dateInput" placeholder="点击选择日期" />
-<div class="dateBox" id="dateBox">
+<!-- <div class="dateBox" id="dateBox"> -->
 	<!-- <div class="dateTitle clearfix">
 		<a href="javascript:;" class="prev left" id="prev">&lt;</a>
 		<a href="javascript:;" class="next right" id="next">&gt;</a>
@@ -81,14 +82,14 @@
 		<span>10</span>
 		<span>11</span>	
 	</div> -->
-</div>
+<!-- </div> -->
 
 
 <script src="js/datepicker.js"></script>
 <script>
 var datepicker = new Datepicker({
 	input: document.getElementById("dateInput"),
-	box: document.getElementById("dateBox")
+	boxClass: "dateBox"
 });
 </script>
 </body>
