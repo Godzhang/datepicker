@@ -1,17 +1,19 @@
-(function(){
-	var Datepicker = function(options){
-		this.opt = Object.assign({}, this.DEFAULT, options);
+var datepicker = (function(){
+	var defaults = {
+		reset: false,		//每次打开是否需要重置到当前月份
+		startfromMonday: false,  //第一列显示周日或者周一
+		boxClass: "dateBox"      //默认日期容器的类
+	}
+
+	var Datepicker = function(el, options){
+		this.el = el;
+		this.opt = Object.assign({}, defaults, options);
 		this.weekDay = ['日', '一', '二', '三', '四', '五', '六'];
 		if(this.opt.startfromMonday){
 			this.weekDay.push(this.weekDay.shift());
 		}
 		this.renderHtml = "";
 		this.currentTime = new Date();
-		this.init();
-	}
-	Datepicker.DEFAULT = {
-		reset: false,		//每次打开是否需要重置到当前月份
-		startfromMonday: false  //第一列显示周日或者周一
 	}
 	Datepicker.prototype = {
 		init: function(){
@@ -28,20 +30,19 @@
 			
 		},
 		addBox: function(){
-			if(!this.box){
-				this.box = document.createElement("div");
-				this.box.className = this.opt.boxClass;
-				this.box.style.top = this.opt.input.offsetTop + this.opt.input.offsetHeight + "px";
-				this.box.style.left = this.opt.input.offsetLeft + this.opt.input.offsetWidth + "px";
-				document.body.appendChild(this.box);
-			}				
+			this.box = document.createElement("div");
+			this.box.className = this.opt.boxClass;
+			this.box.style.position = "absolute";
+			this.box.style.top = this.el.offsetTop + this.el.offsetHeight + 5 + "px";
+			this.box.style.left = this.el.offsetLeft + "px";
+			document.body.appendChild(this.box);
 		},
 		bindEvent: function(){
 			var self = this;
 			var box = this.box;
 			//输入框绑定点击事件
-			this.opt.input.addEventListener("click", function(event){
-				event.stopPropagation();				
+			this.el.addEventListener("click", function(event){
+				event.stopPropagation();
 
 				if(self.opt.reset){
 					self.buildHtml(self.currentYear, self.currentMonth);
@@ -57,10 +58,16 @@
 				event.stopPropagation();
 
 				var target = event.target;
-				if(target.className.indexOf("prev") > -1){
+				if(target.className.indexOf("prevmonth") > -1){
 					self.toLastMonth();
-				}else if(target.className.indexOf("next") > -1){
+				}else if(target.className.indexOf("nextmonth") > -1){
 					self.toNextMonth();
+				}else if(target.className.indexOf("prevyear") > -1){
+					self.year--;
+					self.setHtml();
+				}else if(target.className.indexOf("nextyear") > -1){
+					self.year++;
+					self.setHtml();
 				}else if(target.parentNode.className.indexOf("days") > -1 && target.nodeName.toLowerCase() == "a"){
 					self.showDate(target.innerHTML);
 				}
@@ -80,7 +87,7 @@
 				date = this.addZero(date);
 
 			var selectDate = this.year + "-" + month + "-" + date;
-			this.opt.input.value = selectDate;
+			this.el.value = selectDate;
 			this.box.style.display = "none";
 		},
 		addZero: function(num){
@@ -93,8 +100,7 @@
 			}else{
 				this.month--;
 			}
-			this.buildHtml();
-			this.box.innerHTML = this.renderHtml;
+			this.setHtml();
 		},
 		toNextMonth: function(){
 			if(this.month == 12){
@@ -103,6 +109,9 @@
 			}else{
 				this.month++;
 			}
+			this.setHtml();
+		},
+		setHtml: function(){
 			this.buildHtml();
 			this.box.innerHTML = this.renderHtml;
 		},
@@ -116,8 +125,8 @@
 			this.renderHtml = "";
 			//添加箭头和日期显示
 			this.renderHtml += '<div class="dateTitle clearfix">\
-				<a href="javascript:;" class="prev left">&lt;</a>\
-				<a href="javascript:;" class="next right">&gt;</a>\
+				<a href="javascript:;" class="prevyear  left">&lt;&lt;</a><a href="javascript:;" class="prevmonth left">&lt;</a>\
+				<a href="javascript:;" class="nextyear right">&gt;&gt;</a><a href="javascript:;" class="nextmonth right">&gt;</a>\
 				<span class="dateNow">'+ this.year +'-'+ this.addZero(this.month) +'</span>\
 			</div>';
 			
@@ -168,5 +177,11 @@
 		}
 	}
 
-	window.Datepicker = Datepicker;
+	var init = function(el, options){
+		new Datepicker(el, options).init();
+	}
+
+	return {
+		init: init
+	}
 })();

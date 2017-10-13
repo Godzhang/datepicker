@@ -5,11 +5,13 @@
 	<title>datepicker</title>
 	<link rel="stylesheet" href="css/reset.css">
 	<style>
-		#dateInput{display: block;margin: 5px;width: 300px;height: 30px;line-height: 30px;font-size: 18px;padding: 0 5px;}
-		.dateBox{width: 350px;border: 1px solid #eee;margin: 5px;background: #f8f8f8;display: none;}
+		#dateInput,#dateInput2,#dateInput3{display: block;position: absolute;top: 5px;left: 5px;width: 300px;height: 30px;line-height: 30px;font-size: 18px;padding: 0 5px;}
+		#dateInput2{left: 405px;}
+		#dateInput3{left: 800px;}
+		.dateBox{width: 350px;background: #f8f8f8;display: none;}
 		.dateTitle{height: 30px;line-height: 30px;font-size: 20px;text-align: center;background: #41a9cc;color: #fff;}
-		.prev,.next{width: 30px;color: #fff;}
-		.prev:hover,.next:hover{background: #257eae;}
+		.prevyear,.prevmonth,.nextyear,.nextmonth{width: 30px;color: #fff;}
+		.prevyear:hover,.prevmonth:hover,.nextyear:hover,.nextmonth:hover{background: #257eae;}
 		.week{height: 50px;overflow: hidden;}
 		.week li{background: #eee;}
 		.week li,.days a,.days span{float: left;width: 50px;height: 50px;text-align: center;line-height: 50px;font-size: 20px;color: #373737;}
@@ -18,16 +20,13 @@
 		.days a.cur{background: #4184a9;color: #fff;}
 		.days a.sel{background: #f00;color: #fff;}
 		.days a:hover{background: #ff7300;color: #fff;}
-
-		.change{position: absolute;top: 20px;left: 450px;}
-		.item{height: 40px;line-height: 40px;font-size: 20px;margin-bottom: 20px;}
-		.item span{display: inline-block;line-height: 40px;width: 320px;}
-		.item a{display: inline-block;line-height: 40px;padding: 0 5px;background: #08c;color: #fff;}
 	</style>
 </head>
 <body>
 
-<input type="text" id="dateInput" placeholder="点击选择日期" />
+<input type="text" id="dateInput" placeholder="选择开始日期" />
+<input type="text" id="dateInput2" placeholder="选择结束日期" />
+<input type="text" id="dateInput3" placeholder="选择死亡日期" />
 <!-- <div class="dateBox" id="dateBox"> -->
 	<!-- <div class="dateTitle clearfix">
 		<a href="javascript:;" class="prev left" id="prev">&lt;</a>
@@ -89,46 +88,17 @@
 	</div> -->
 <!-- </div> -->
 
-<div class="change">
-	<div class="item">
-		<span>更换星期排列方式</span><a href="javascript:;" id="changeWeekDay">changeWeekDay</a>
-	</div>
-	<div class="item">
-		<span>每次打开是否需要重置到当前月份</span><a href="javascript:;" id="reset">reset</a>
-	</div>
-</div>
+
 
 <script src="js/datepicker.js"></script>
 <script>
-var datepicker = new Datepicker({
-	input: document.getElementById("dateInput"),
-	boxClass: "dateBox"
+datepicker.init(document.getElementById("dateInput"),{});
+datepicker.init(document.getElementById("dateInput2"),{
+	reset: true
 });
-
-var change = document.getElementById("changeWeekDay");
-var reset = document.getElementById("reset");
-change.onclick = function(){
-	var box = document.querySelector(".dateBox");
-	box.parentNode.removeChild(box);
-
-	datepicker = new Datepicker({
-		input: document.getElementById("dateInput"),
-		boxClass: "dateBox",
-		startfromMonday: true
-	});
-}
-
-reset.onclick = function(){
-	var box = document.querySelector(".dateBox");
-	box.parentNode.removeChild(box);
-
-	datepicker = new Datepicker({
-		input: document.getElementById("dateInput"),
-		boxClass: "dateBox",
-		reset: true
-	});
-}
-
+datepicker.init(document.getElementById("dateInput3"),{
+	startfromMonday: true
+});
 
 </script>
 </body>
