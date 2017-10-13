@@ -16,8 +16,13 @@
 		.days a,.days span{font-size: 18px;}
 		.days span{color: #999;}		
 		.days a.cur{background: #4184a9;color: #fff;}
-		.days a.sel{background: #f79851;color: #fff;}
+		.days a.sel{background: #f00;color: #fff;}
 		.days a:hover{background: #ff7300;color: #fff;}
+
+		.change{position: absolute;top: 20px;left: 450px;}
+		.item{height: 40px;line-height: 40px;font-size: 20px;margin-bottom: 20px;}
+		.item span{display: inline-block;line-height: 40px;width: 320px;}
+		.item a{display: inline-block;line-height: 40px;padding: 0 5px;background: #08c;color: #fff;}
 	</style>
 </head>
 <body>
@@ -84,6 +89,14 @@
 	</div> -->
 <!-- </div> -->
 
+<div class="change">
+	<div class="item">
+		<span>更换星期排列方式</span><a href="javascript:;" id="changeWeekDay">changeWeekDay</a>
+	</div>
+	<div class="item">
+		<span>每次打开是否需要重置到当前月份</span><a href="javascript:;" id="reset">reset</a>
+	</div>
+</div>
 
 <script src="js/datepicker.js"></script>
 <script>
@@ -91,6 +104,32 @@ var datepicker = new Datepicker({
 	input: document.getElementById("dateInput"),
 	boxClass: "dateBox"
 });
+
+var change = document.getElementById("changeWeekDay");
+var reset = document.getElementById("reset");
+change.onclick = function(){
+	var box = document.querySelector(".dateBox");
+	box.parentNode.removeChild(box);
+
+	datepicker = new Datepicker({
+		input: document.getElementById("dateInput"),
+		boxClass: "dateBox",
+		startfromMonday: true
+	});
+}
+
+reset.onclick = function(){
+	var box = document.querySelector(".dateBox");
+	box.parentNode.removeChild(box);
+
+	datepicker = new Datepicker({
+		input: document.getElementById("dateInput"),
+		boxClass: "dateBox",
+		reset: true
+	});
+}
+
+
 </script>
 </body>
 </html>

@@ -28,11 +28,14 @@
 			
 		},
 		addBox: function(){
-			this.box = document.createElement("div");
-			this.box.className = this.opt.boxClass;
-			this.box.style.top = this.opt.input.offsetTop + this.opt.input.offsetHeight + "px";
-			this.box.style.left = this.opt.input.offsetLeft + this.opt.input.offsetWidth + "px";
-			document.body.appendChild(this.box);
+			if(!this.box){
+				this.box = document.createElement("div");
+				this.box.className = this.opt.boxClass;
+				this.box.id = "dateBox";
+				this.box.style.top = this.opt.input.offsetTop + this.opt.input.offsetHeight + "px";
+				this.box.style.left = this.opt.input.offsetLeft + this.opt.input.offsetWidth + "px";
+				document.body.appendChild(this.box);
+			}				
 		},
 		bindEvent: function(){
 			var self = this;
